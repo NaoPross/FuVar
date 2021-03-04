@@ -3,7 +3,7 @@
 % !TeX root = FuVar.tex
 
 %% TODO: publish to CTAN
-\documentclass[twocolumn]{tex/hsrzf}
+\documentclass[twocolumn, margin=normal]{tex/hsrzf}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Packages
@@ -26,6 +26,9 @@
 %% Math
 \usepackage{amsmath}
 \usepackage{amsthm}
+
+% Layout
+\usepackage{enumitem}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Metadata
@@ -66,6 +69,15 @@
 \newtheorem{definition}{Definition}
 \newtheorem{lemma}{Lemma}
 
+\setlist[description]{
+  align = right, labelwidth = 2cm, leftmargin = !,
+  format = { \normalfont\itshape }
+}
+
+\setlist[itemize]{
+  align = right, labelwidth = 5mm, leftmargin = !
+}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Document
 
@@ -74,8 +86,38 @@
 \maketitle
 \tableofcontents
 
-\section*{License}
-\doclicenseThis
+\section{Fields and vector spaces}
+\begin{definition}[Field]
+  A field is a set \(F\) with two binary operators \(+\) and \(\cdot\) that map
+  \(F\times F \to F\) and follow the \emph{field axioms} listed below. We let 
+  \(a, (-a), b, b^{-1} \in F\) and \(\star\) stand for either \(\cdot\) or \(+\).
+  \begin{description}[leftmargin=2.5cm]
+    \item[Associativity] \((a \star b) \star c = a \star (b \star c)\)
+    \item[Commutativity] \(a \star b = b \star a\) 
+    \item[Identities] \(0 + a = a\) and \(1\cdot a = a\)
+    \item[Inverses]
+      \begin{itemize}
+        \item \(a + (-a) = 0\) and 
+        \item \(b \cdot b^{-1} = 1\) where \(b \neq 0\)
+      \end{itemize}
+    \item[Distributivity] \(a \cdot (b + c) = a\cdot b + a \cdot c\)
+  \end{description}
+\end{definition}
+
+\begin{theorem}
+  \(\Rset\) is a field.
+\end{theorem}
+
+\begin{definition}[Vector space]
+  A vector \(V\) space over a field \(F\)
+\end{definition}
+
+\begin{theorem}
+  \(\Rset^n\) is a vector space.
+\end{theorem}
+
+\begin{definition}[Row and column vectors]
+\end{definition}
 
 \section{Scalar Fields}
 
@@ -86,7 +128,7 @@
 
 \begin{definition}[Partial derivative of a scalar field]
   Let \(f: \Rset^n \to \Rset\), the \emph{partial} derivative of \(f\) with
-  respect to \(x_k\), (\(0 < k < n\)), is defined as
+  respect to \(x_k\), (\(0 < k \leq n\)), is defined as
   \[
     \frac{\partial f}{\partial x_k} :=
     \lim_{h \to 0} \frac{f(x_1, \dots, x_k + h, \dots, x_n) 
@@ -122,5 +164,13 @@ The above can be used to calculate the one dimensional derivative of an implicit
     \dd{f}
   \]
 \end{definition}
+
+
+\section*{License}
+\doclicenseText
+
+\begin{center}
+  \doclicenseImage
+\end{center}
 
 \end{document}
