@@ -13,28 +13,58 @@
 
 %% Language configuration
 \usepackage{polyglossia}
-\setdefaultlanguage[variant=swiss]{german}
+\setdefaultlanguage{english}
 
 %% License configuration
 \usepackage[
     type={CC},
     modifier={by-nc-sa},
     version={4.0},
-    lang={german},
+    lang={english},
 ]{doclicense}
+
+%% Math
+\usepackage{amsmath}
+\usepackage{amsthm}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Metadata
 
 \course{Elektrotechnik}
 \module{FuVar}
-\semester{Fr\"uhlingssemester 2021}
+\semester{Spring Semseter 2021}
 
 \authoremail{naoki.pross@ost.ch}
 \author{\textsl{Naoki Pross} -- \texttt{\theauthoremail}}
 
-\title{\texttt{\themodule} Zusammenfassung}
+\title{\texttt{\themodule} Notes}
 \date{\thesemester}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Macros and settings
+
+%% number sets
+\newcommand\Nset{\mathbb{N}}
+\newcommand\Zset{\mathbb{Z}}
+\newcommand\Qset{\mathbb{Q}}
+\newcommand\Rset{\mathbb{R}}
+\newcommand\Cset{\mathbb{C}}
+
+%% Theorems
+\newtheoremstyle{fuvarzf} % name of the style to be used
+  {\topsep}
+  {\topsep}
+  {}
+  {0pt}
+  {\bfseries}
+  {.}
+  { }
+  { }
+
+\theoremstyle{fuvarzf}
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Document
@@ -44,8 +74,53 @@
 \maketitle
 \tableofcontents
 
-
-\section{Lizenz}
+\section*{License}
 \doclicenseThis
+
+\section{Scalar Fields}
+
+\begin{definition}[Scalar Field]
+  We call a function \(f\) a \emph{scalar field} when it maps values from
+  \(\Rset^n \to \Rset\).
+\end{definition}
+
+\begin{definition}[Partial derivative of a scalar field]
+  Let \(f: \Rset^n \to \Rset\), the \emph{partial} derivative of \(f\) with
+  respect to \(x_k\), (\(0 < k < n\)), is defined as
+  \[
+    \frac{\partial f}{\partial x_k} :=
+    \lim_{h \to 0} \frac{f(x_1, \dots, x_k + h, \dots, x_n) 
+      - f(x_1, \dots, x_k, \dots, x_n)}{h}
+    = \partial_{x_k} f(x, y)
+  \]
+  That is, we keep all variables of \(f\) fixed, except for \(x_k\).
+\end{definition}
+
+\begin{definition}[Tangent plane]
+  For a scalar field \(f(x,y)\) we define the \emph{tangent plane} \(p(x,y)\)
+  at coordinates \((x_0, y_0)\) to be:
+  \[
+    p(x, y) =
+      f(x_0, y_0)
+      + \partial_x f(x_0, y_0) (x - x_0)
+      + \partial_y f(x_0, y_0) (y - y_0)
+  \]
+\end{definition}
+
+The above can be used to calculate the one dimensional derivative of an implicit curve.
+
+\begin{lemma}[Implicit derivative]
+  The slope \(m\) of an implicit curve \(f(x,y)\) at the point \((x_0, y_0)\) is given by
+  \[
+    m = \partial_x f(x_0, y_0) / \partial_y f(x_0, y_0)
+  \]
+  of course only if \(\partial_y f(x_0, y_0) \neq 0\).
+\end{lemma}
+
+\begin{definition}[Total derivative]
+  \[
+    \dd{f}
+  \]
+\end{definition}
 
 \end{document}
