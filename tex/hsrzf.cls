@@ -145,7 +145,7 @@
 \RequirePackage{geometry}
 \RequirePackage{fancyhdr}
 \RequirePackage{titling}
-\RequirePackage{lastpage}
+% \RequirePackage{lastpage}
 \RequirePackage{array}
 
 %% Insert metadata in the pdf
