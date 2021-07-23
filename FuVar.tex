@@ -10,7 +10,6 @@
 
 %% TODO: publish to CTAN
 \usepackage{tex/hsrstud}
-\usepackage{mathtools}
 
 %% Language configuration
 \usepackage{polyglossia}
@@ -27,9 +26,13 @@
 %% Math
 \usepackage{amsmath}
 \usepackage{amsthm}
+\usepackage{mathtools}
 
-% Layout
+%% Layout
 \usepackage{enumitem}
+
+%% Nice drwaings
+\usepackage{tikz}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Metadata
@@ -147,12 +150,14 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
   A function \(f(\vec{x})\) has a directional derivative in direction
   \(\vec{r}\) (with \(|\vec{r}| = 1\)) given by
   \[
-    \frac{\partial f}{\partial\vec{r}} = \nabla_\vec{r} f = \vec{r} \dotp \grad f
+    \frac{\partial f}{\partial\vec{r}} 
+      = \nabla_\vec{r} f = \vec{r} \dotp \grad f
   \]
 \end{definition}
 
 \begin{theorem}
-  The gradient vector always points towards \emph{the direction of steepest ascent}.
+  The gradient vector always points towards \emph{the direction of steepest
+  ascent}.
 \end{theorem}
 
 \section{Methods for maximization and minimization problems}
@@ -272,8 +277,8 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
     Search for a constrained extremum in higher dimensions,
     method of Lagrange multipliers]
   We wish to find the extrema of \(f: D \subseteq \mathbb{R}^m \to \mathbb{R}\)
-  under \(k < m\) constraints \(n_1 = 0, \cdots, n_k = 0\). For that we consider
-  the following points:
+  under \(k < m\) constraints \(n_1 = 0, \cdots, n_k = 0\). To find the extrema 
+  we consider the following points:
   \begin{itemize}
     \item Points on the boundary \(\vec{u} \in \partial D\) that satisfy
       \(n_i(\vec{u}) = 0\) for all \(1 \leq i \leq k\), 
@@ -293,11 +298,22 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
           n_i(\vec{u}) = 0  & \text{ for } 1 \leq i \leq k
         \end{dcases}
       \]
-      The \(\lambda\) values are known as \emph{Lagrange multipliers}.
+      The \(\lambda\) values are known as \emph{Lagrange multipliers}. The same
+      calculation can be written more compactly by defining the
+      \(m+k\) dimensional \emph{Lagrangian}
+      \[
+        \mathcal{L}(\vec{u}, \vec{\lambda}) 
+          = f(\vec{u}) - \sum_{i = 0}^k \lambda_i n_i(\vec{u})
+      \]
+      where \(\vec{\lambda} = \lambda_1, \ldots, \lambda_k\) and then
+      evaluating \(\grad \mathcal{L}(\vec{u}, \vec{\lambda}) = \vec{0}\).
   \end{itemize}
 \end{method}
 
 \section{Integration}
+\begin{remark}
+  
+\end{remark}
 
 
 \section*{License}
@@ -308,3 +324,4 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
 \end{center}
 
 \end{document}
+% vim:ts=2 sw=2 et spell:
