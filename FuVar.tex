@@ -155,7 +155,7 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
   The gradient vector always points towards \emph{the direction of steepest ascent}.
 \end{theorem}
 
-\subsection{Methods for maximization and minimization problems}
+\section{Methods for maximization and minimization problems}
 
 \begin{method}[Find stationary points]
   Given a function \(f: D \subseteq \mathbb{R}^m \to \mathbb{R}\), to
@@ -288,7 +288,7 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
     \item Points that solve the system of \(m+k\) equations
       \[
         \begin{dcases}
-          \grad f(\vec{u}) = \sum_{i = 1}^k \lambda_k \grad n_i(\vec{u})
+          \grad f(\vec{u}) = \sum_{i = 1}^k \lambda_i \grad n_i(\vec{u})
             & (m\text{-dimensional}) \\
           n_i(\vec{u}) = 0  & \text{ for } 1 \leq i \leq k
         \end{dcases}
@@ -296,6 +296,9 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
       The \(\lambda\) values are known as \emph{Lagrange multipliers}.
   \end{itemize}
 \end{method}
+
+\section{Integration}
+
 
 \section*{License}
 \doclicenseText
