@@ -10,6 +10,7 @@
 
 %% TODO: publish to CTAN
 \usepackage{tex/hsrstud}
+\usepackage{mathtools}
 
 %% Language configuration
 \usepackage{polyglossia}
@@ -46,14 +47,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Macros and settings
 
-%% number sets
-\newcommand\Nset{\mathbb{N}}
-\newcommand\Zset{\mathbb{Z}}
-\newcommand\Qset{\mathbb{Q}}
-\newcommand\Rset{\mathbb{R}}
-\newcommand\Cset{\mathbb{C}}
-\newcommand\T{\mathrm{T}}
-
 %% Theorems
 \newtheoremstyle{fuvarzf} % name of the style to be used
   {\topsep}
@@ -67,8 +60,14 @@
 
 \theoremstyle{fuvarzf}
 \newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{method}{Method}
 \newtheorem{definition}{Definition}
 \newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\DeclareMathOperator{\tr}{\mathrm{tr}}
+
 
 \setlist[description]{
   format = { \normalfont\itshape }
@@ -80,115 +79,223 @@
 \begin{document}
 
 \maketitle
-\tableofcontents
+% \tableofcontents
 
-\section{Fields and vector spaces}
+\section{Preface}
 
-\begin{definition}[Field]
-  A field is a set \(F\) with two binary operators \(+\) and \(\cdot\) that map
-  \(F\times F \to F\) and follow the \emph{field axioms} listed below. We let 
-  \(a, b \in F\) and \(\star\) stands for \(\cdot\) or \(+\).
-  \begin{description}
-    \item[Associativity:] \((a \star b) \star c = a \star (b \star c)\)
-    \item[Commutativity:] \(a \star b = b \star a\) 
-    \item[Identities:] \(0 + a = a\) and \(1\cdot a = a\)
-    \item[Inverses:]
-        \(a + (-a) = 0\) and 
-        \(b \cdot b^{-1} = 1\) iff \(b \neq 0\)
-    \item[Distributivity:] \(a \cdot (b + c) = a\cdot b + a \cdot c\)
-  \end{description}
+These are just my personal notes of the \themodule{} course, and definitively
+not a rigorously constructed mathematical text. The good looking \LaTeX{}
+typesetting may trick you into thinking it is rigorous, but really, it is not.
+
+\section{Derivatives of vector valued scalar functions}
+
+\begin{definition}[Partial derivative]
+  A vector values function \(f: \mathbb{R}^m\to\mathbb{R}\), with
+  \(\vec{v}\in\mathbb{R}^m\), has a partial derivative with respect to \(v_i\)
+  defined as
+  \[
+    \partial_{v_i} f(\vec{v})
+      = f_{v_i}(\vec{v})
+      = \lim_{h\to 0} \frac{f(\vec{v} + h\vec{e}_j) - f(\vec{v})}{h}
+  \]
+\end{definition}
+
+\begin{proposition}
+  Under some generally satisfied conditions (continuity of \(n\)-th order
+  partial derivatives) Schwarz's theorem states that it is possible to swap
+  the order of differentiation.
+  \[
+    \partial_x \partial_y f(x,y) = \partial_y \partial_x f(x,y)
+  \]
+\end{proposition}
+
+\begin{definition}[Linearization]
+  A function \(f: \mathbb{R}^m\to\mathbb{R}\) has a linearization \(g\) at
+  \(\vec{x}_0\) given by
+  \[
+    g(\vec{x}) = f(\vec{x}_0) 
+      + \sum_{i=1}^m \partial_{x_i} f(\vec{x}_0)(x_i - x_{i,0}) ,
+  \]
+  if all partial derviatives are defined at \(\vec{x}_0\).
+\end{definition}
+
+\begin{theorem}[Propagation of uncertanty]
+  Given a measurement of \(m\) values in a vector \(\vec{x}\in\mathbb{R}^m\)
+  with values given in the form \(x_i = \bar{x}_i \pm \sigma_{x_i}\), a linear
+  approximation the error of a dependent variable \(y\) is computed with
+  \[
+    y = \bar{y} \pm \sigma_y \approx f(\bar{\vec{x}})
+      \pm \sqrt{\sum_{i=1}^m \left(
+        \partial_{x_i} f(\bar{\vec{x}}) \sigma_{x_i}\right)^2}
+  \]
+\end{theorem}
+
+\begin{definition}[Gradient vector]
+  The \emph{gradient} of a function \(f(\vec{x}), \vec{x}\in\mathbb{R}^m\) is a
+  vector containing the derivatives in each direction.
+  \[
+    \grad f (\vec{x}) = \sum_{i=1}^m \partial_{x_i} f(\vec{x}) \vec{e}_i
+      = \begin{pmatrix}
+        \partial_{x_1} f(\vec{x}) \\
+        \vdots \\
+        \partial_{x_m} f(\vec{x}) \\
+      \end{pmatrix}
+  \]
+\end{definition}
+
+\begin{definition}[Directional derivative]
+  A function \(f(\vec{x})\) has a directional derivative in direction
+  \(\vec{r}\) (with \(|\vec{r}| = 1\)) given by
+  \[
+    \frac{\partial f}{\partial\vec{r}} = \nabla_\vec{r} f = \vec{r} \dotp \grad f
+  \]
 \end{definition}
 
 \begin{theorem}
-  \(\Rset\) is a field.
+  The gradient vector always points towards \emph{the direction of steepest ascent}.
 \end{theorem}
 
-\begin{definition}[Vector space]
-  A vector space \(U\) over a field \(F\) is a set of objects called
-  \emph{vectors} equipped with two operations: \emph{addition} 
-  \(+: U \times U \to U\) and \emph{scalar multiplication} 
-  \(\cdot: F\times U \to U\), that respect the following axioms.
-  Let \(\vec{u}, \vec{v}, \vec{w} \in U\) and \(a, b \in F\).
-  \begin{description}
-    \item[Additive associativity:] \((\vec{u} + \vec{v}) + \vec{w} 
-      = \vec{u} + (\vec{v} + \vec{w})\)
-    \item[Additive commutativity:] \(\vec{u} + \vec{v} = \vec{v} + \vec{u}\)
-    \item[Identities:] There is an element 
-      \(\vec{0} \in U : \vec{u} + \vec{0} = \vec{u}\) 
-      and \(1 \in F : 1 \cdot \vec{u} = \vec{u}\)
-    \item[Additive inverse:] \(\vec{u} + (\vec{-u}) = 0\)
-    \item[Compatibility of multiplication] 
-      \(a\cdot (b \cdot \vec{u}) = (a\cdot b) \cdot \vec{u}\)
-    \item[Distributivity:]
-      \((a + b) \cdot \vec{u} = a\cdot\vec{u} + b\cdot\vec{u}\) and conversely
-      \(a \cdot (\vec{u} + \vec{v}) = a\cdot\vec{u} + a\cdot\vec{v}\)
-  \end{description}
-  And of course elements in \(F\) follow the field axioms.
-\end{definition}
+\subsection{Methods for maximization and minimization problems}
 
-\begin{theorem}
-  \(\Rset^n = \Rset\times\cdots\times\Rset\) is a vector space.
-\end{theorem}
+\begin{method}[Find stationary points]
+  Given a function \(f: D \subseteq \mathbb{R}^m \to \mathbb{R}\), to
+  find its maxima and minima we shall consider the points
+  \begin{itemize}
+    \item that are on the boundary of the domain \(\partial D\),
+    \item where the gradient \(\grad f\) is not defined,
+    \item that are stationary, i.e. where \(\grad f = \vec{0}\).
+  \end{itemize}
+\end{method}
 
-\begin{definition}[Row and column vectors]
-  Although there is virtually no difference between the two, we need two type
-  of \(n\)-tuples that satisfy the vector space axioms. \emph{Row} vectors are
-  written horizontally and \emph{column} vectors vertically.
-\end{definition}
-
-\begin{definition}[Transposition]
-  Let \(\vec{u} \in \Rset^n\) be a row vector. The \emph{transpose} of
-  \(\vec{u}\) denoted with \(\vec{u}^\T\) is column vector with the same
-  components. Conversely if \(\vec{v}\) is a column vector then \(\vec{v}^\T\)
-  is a row vector.
-\end{definition}
-
-\section{Scalar fields}
-
-\begin{definition}[Scalar field]
-  Confusingly we call a function \(f: \Rset^n \to \Rset\) a \emph{scalar
-  field}, but this is unrelated to the previously defined field.
-\end{definition}
-
-\begin{definition}[Partial derivative of a scalar field]
-  Let \(f: \Rset^n \to \Rset\), the \emph{partial} derivative of \(f\) with
-  respect to \(x_k\), (\(0 < k \leq n\)), is defined as
+\begin{method}[Determine the type of stationary point for 2 dimensions]
+  Given a scalar function of two variables \(f(x,y)\) and a stationary point
+  \(\vec{x}_s\) (where \(\grad f(\vec{x}_s) = \vec{0}\)), we define the
+  \emph{discriminant}
   \[
-    \frac{\partial f}{\partial x_k} :=
-    \lim_{h \to 0} \frac{f(x_1, \dots, x_k + h, \dots, x_n) 
-      - f(x_1, \dots, x_k, \dots, x_n)}{h}
-    = \partial_{x_k} f(x, y)
+    \Delta = \partial_x^2 f \partial_y^2 f - \partial_y \partial_x f
   \]
-  That is, we keep all variables of \(f\) fixed, except for \(x_k\).
+  \begin{itemize}
+    \item if \(\Delta > 0\) then \(\vec{x}_s\) is an extrema, if \(\partial_x^2
+      f(\vec{x}_s) < 0\) it is a maximum, whereas if \(\partial_x^2
+      f(\vec{x}_s) > 0\) it is a minimum;
+
+    \item if \(\Delta < 0\) then \(\vec{x}_s\) is a saddle point;
+
+    \item if \(\Delta = 0\) we need to analyze further.
+  \end{itemize}
+\end{method}
+
+\begin{remark}
+  The previous method is obtained by studying the second directional derivative
+  \(\nabla_\vec{r}\nabla_\vec{r} f\) at the stationary point in direction of a
+  vector \(\vec{r} = \vec{e}_1\cos(\alpha) + \vec{e}_2\sin(\alpha)\)
+\end{remark}
+
+\begin{definition}[Hessian matrix]
+  Given a function \(f: \mathbb{R}^m \to \mathbb{R}\), the square matrix whose
+  entry at the \(i\)-th row and \(j\)-th column is the second derivative of
+  \(f\) first with respect to \(x_j\) and then to \(x_i\) is know as the
+  \emph{Hessian} matrix.
+  \(
+    \left(\mtx{H}_f\right)_{i,j} = \partial_{x_i}\partial_{x_j} f
+  \)
+  or
+  \[
+    \mtx{H}_f = \begin{pmatrix}
+      \partial_{x_1}\partial_{x_1} f & \cdots & \partial_{x_1}\partial_{x_m} f \\
+      \vdots & \ddots & \vdots \\
+      \partial_{x_m}\partial_{x_1} f & \cdots & \partial_{x_m}\partial_{x_m} f \\
+    \end{pmatrix}
+  \]
+  Because (almost always) the order of differentiation
+  does not matter, it is a symmetric matrix.
 \end{definition}
 
-\begin{definition}[Tangent plane]
-  For a scalar field \(f(x,y)\) we define the \emph{tangent plane} \(p(x,y)\)
-  at coordinates \((x_0, y_0)\) to be:
+\begin{method}[Determine the type of stationary point in higher dimensions]
+  Given a scalar function of two variables \(f(x,y)\) and a stationary point
+  \(\vec{x}_s\) (where \(\grad f(\vec{x}_s) = \vec{0}\)), we compute the
+  Hessian matrix \(\mtx{H}_f(\vec{x}_s)\). Then we compute its eigenvalues
+  \(\lambda_1, \ldots, \lambda_m\) and
+  \begin{itemize}
+    \item if all \(\lambda_i > 0\), the point is a minimum;
+    \item if all \(\lambda_i < 0\), the point is a maximum;
+    \item if there are both positive and negative eigenvalues,
+      it is a saddle point.
+  \end{itemize}
+  In the other cases, when there are \(\lambda_i \leq 0\) and/or \(\lambda_i
+  \geq 0\) further analysis is required.
+\end{method}
+
+\begin{remark}
+  Recall that to compute the eigenvalues of a matrix, one must solve the
+  equation \((\mtx{H} - \lambda\mtx{I})\vec{x} = \vec{0}\). Which can be done
+  by solving the characteristic polynomial \(\det\left(\mtx{H} -
+  \lambda\mtx{I}\right) = 0\) to obtain \(\dim(\mtx{H})\) \(\lambda_i\), which
+  when plugged back in result in a overdetermined system of equations.
+\end{remark}
+
+\begin{method}[Quickly find the eigenvalues of a \(2\times 2\) matrix]
+  Let
   \[
-    p(x, y) =
-      f(x_0, y_0)
-      + \partial_x f(x_0, y_0) (x - x_0)
-      + \partial_y f(x_0, y_0) (y - y_0)
+    m = \frac{1}{2}\tr \mtx{H} = \frac{a + d}{2}
+    \text{  and  }
+    p = \det\mtx{H} = ad - bc ,
   \]
-\end{definition}
-
-The above can be used to calculate the one dimensional derivative of an implicit curve.
-
-\begin{lemma}[Implicit derivative]
-  The slope \(m\) of an implicit curve \(f(x,y)\) at the point \((x_0, y_0)\) is given by
+  then
   \[
-    m = \partial_x f(x_0, y_0) / \partial_y f(x_0, y_0)
+    \lambda = m \pm \sqrt{m^2 - p} .
   \]
-  of course only if \(\partial_y f(x_0, y_0) \neq 0\).
-\end{lemma}
+\end{method}
 
-\begin{definition}[Total derivative]
-  \[
-    \dd{f}
-  \]
-\end{definition}
+\begin{method}[Search for a constrained extremum in 2 dimensions]
+  Let \(n(x,y) = 0\) be a constraint in the search of the extrema of a function
+  \(f: D \subseteq \mathbb{R}^2 \to \mathbb{R}\). To find the extrema we look for
+  points
+  \begin{itemize}
+    \item on the boundary \(\vec{u} \in \partial D\) where \(n(\vec{u}) = 0\);
 
+    \item \(\vec{u}\) where the gradient either does not exist or is
+      \(\vec{0}\), and satisfy \(n(\vec{u}) = 0\);
+
+    \item that solve the system of equations
+      \[
+        \begin{cases}
+          \partial_x f(\vec{u}) \cdot \partial_y n(\vec{u})
+            = \partial_y f(\vec{u}) \cdot \partial_x n(\vec{u}) \\
+          n(\vec{u}) = 0
+        \end{cases}
+      \]
+  \end{itemize}
+\end{method}
+
+\begin{method}[%
+    Search for a constrained extremum in higher dimensions,
+    method of Lagrange multipliers]
+  We wish to find the extrema of \(f: D \subseteq \mathbb{R}^m \to \mathbb{R}\)
+  under \(k < m\) constraints \(n_1 = 0, \cdots, n_k = 0\). For that we consider
+  the following points:
+  \begin{itemize}
+    \item Points on the boundary \(\vec{u} \in \partial D\) that satisfy
+      \(n_i(\vec{u}) = 0\) for all \(1 \leq i \leq k\), 
+
+    \item Points \(\vec{u} \in D\) where either
+      \begin{itemize}
+        \item any of \(\grad f, \grad n_1, \ldots, \grad n_k\) do not exist, or
+        \item \(\grad n_1, \ldots, \grad n_k\) are linearly \emph{dependent},
+      \end{itemize}
+      and that satisfy \(0 = n_1(\vec{u}) = \ldots = n_k(\vec{u})\).
+
+    \item Points that solve the system of \(m+k\) equations
+      \[
+        \begin{dcases}
+          \grad f(\vec{u}) = \sum_{i = 1}^k \lambda_k \grad n_i(\vec{u})
+            & (m\text{-dimensional}) \\
+          n_i(\vec{u}) = 0  & \text{ for } 1 \leq i \leq k
+        \end{dcases}
+      \]
+      The \(\lambda\) values are known as \emph{Lagrange multipliers}.
+  \end{itemize}
+\end{method}
 
 \section*{License}
 \doclicenseText
