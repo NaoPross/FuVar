@@ -155,7 +155,7 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
   \(\vec{r}\) (with \(|\vec{r}| = 1\)) given by
   \[
     \frac{\partial f}{\partial\vec{r}} 
-      = \nabla\vec{r} f = \vec{r} \dotp \grad f
+      = \nabla_\vec{r} f = \vec{r} \dotp \grad f
   \]
 \end{definition}
 
@@ -270,13 +270,13 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
 \end{remark}
 
 \begin{method}[Quickly find the eigenvalues of a \(2\times 2\) matrix]
-  Let
+  This is a nice trick. For a square matrix \(\mx{H}\), let
   \[
     m = \frac{1}{2}\tr \mx{H} = \frac{a + d}{2} ,
-    \qquad
+    \quad
     p = \det\mx{H} = ad - bc ,
   \]
-  then \(\lambda = m \pm \sqrt{m^2 - p}\).
+  then \(\lambda_{1,2} = m \pm \sqrt{m^2 - p}\).
 \end{method}
 
 \begin{method}[Search for a constrained extremum in 2 dimensions]
