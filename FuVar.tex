@@ -30,6 +30,7 @@
 
 %% Layout
 \usepackage{enumitem}
+\usepackage{booktabs}
 
 %% Nice drwaings
 \usepackage{tikz}
@@ -63,11 +64,11 @@
 
 \theoremstyle{fuvarzf}
 \newtheorem{theorem}{Theorem}
-\newtheorem{proposition}{Proposition}
 \newtheorem{method}{Method}
+\newtheorem{application}{Application}
 \newtheorem{definition}{Definition}
-\newtheorem{lemma}{Lemma}
 \newtheorem{remark}{Remark}
+\newtheorem{note}{Note}
 
 \DeclareMathOperator{\tr}{\mathrm{tr}}
 
@@ -90,7 +91,7 @@ These are just my personal notes of the \themodule{} course, and definitively
 not a rigorously constructed mathematical text. The good looking \LaTeX{}
 typesetting may trick you into thinking it is rigorous, but really, it is not.
 
-\section{Derivatives of vector valued scalar functions}
+\section{Derivatives of vector valued functions}
 
 \begin{definition}[Partial derivative]
   A vector values function \(f: \mathbb{R}^m\to\mathbb{R}\), with
@@ -103,14 +104,14 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
   \]
 \end{definition}
 
-\begin{proposition}
+\begin{theorem}(Schwarz's theorem, symmetry of partial derivatives)
   Under some generally satisfied conditions (continuity of \(n\)-th order
   partial derivatives) Schwarz's theorem states that it is possible to swap
   the order of differentiation.
   \[
     \partial_x \partial_y f(x,y) = \partial_y \partial_x f(x,y)
   \]
-\end{proposition}
+\end{theorem}
 
 \begin{definition}[Linearization]
   A function \(f: \mathbb{R}^m\to\mathbb{R}\) has a linearization \(g\) at
@@ -135,7 +136,10 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
 
 \begin{definition}[Gradient vector]
   The \emph{gradient} of a function \(f(\vec{x}), \vec{x}\in\mathbb{R}^m\) is a
-  vector containing the derivatives in each direction.
+  column vector\footnote{In matrix notation it is also often defined as row
+  vector to avoid having to do some transpositions in the Jacobian matrix and
+  dot products in directional derivatives} containing the derivatives in each
+  direction.
   \[
     \grad f (\vec{x}) = \sum_{i=1}^m \partial_{x_i} f(\vec{x}) \vec{e}_i
       = \begin{pmatrix}
@@ -151,7 +155,7 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
   \(\vec{r}\) (with \(|\vec{r}| = 1\)) given by
   \[
     \frac{\partial f}{\partial\vec{r}} 
-      = \nabla_\vec{r} f = \vec{r} \dotp \grad f
+      = \nabla\vec{r} f = \vec{r} \dotp \grad f
   \]
 \end{definition}
 
@@ -159,6 +163,52 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
   The gradient vector always points towards \emph{the direction of steepest
   ascent}.
 \end{theorem}
+
+\begin{definition}[Jacobian Matrix]
+  The \emph{Jacobian} \(\mx{J}_f\) (sometimes written as
+  \(\frac{\partial(f_1,\ldots f_m)}{\partial(x_1,\ldots,x_n)}\)) of a function
+  \(\vec{f}: \mathbb{R}^n \to \mathbb{R}^m\) is a matrix
+  \(\in\mathbb{R}^{n\times m}\) whose entry at the \(i\)-th row and \(j\)-th
+  column is given by \((\mx{J}_f)_{i,j} = \partial_{x_j} f_i\), so
+  \[
+    \mx{J}_f = \begin{pmatrix}
+      \partial_{x_1} f_1 & \cdots & \partial_{x_n} f_1 \\
+      \vdots & \ddots & \vdots \\
+      \partial_{x_1} f_m & \cdots & \partial_{x_n} f_m \\
+    \end{pmatrix}
+    = \begin{pmatrix}
+      (\grad f_1)^t \\
+      \vdots \\
+      (\grad f_m)^t \\
+    \end{pmatrix}
+  \]
+\end{definition}
+
+\begin{remark}
+  In the scalar case (\(m = 1\)) the Jacobian matrix is the transpose of the
+  gradient vector.
+\end{remark}
+
+\begin{definition}[Hessian matrix]
+  Given a function \(f: \mathbb{R}^m \to \mathbb{R}\), the square matrix whose
+  entry at the \(i\)-th row and \(j\)-th column is the second derivative of
+  \(f\) first with respect to \(x_j\) and then to \(x_i\) is know as the
+  \emph{Hessian} matrix.
+  \(
+    \left(\mx{H}_f\right)_{i,j} = \partial_{x_i}\partial_{x_j} f
+  \)
+  or
+  \[
+    \mx{H}_f = \begin{pmatrix}
+      \partial_{x_1}\partial_{x_1} f & \cdots & \partial_{x_1}\partial_{x_m} f \\
+      \vdots & \ddots & \vdots \\
+      \partial_{x_m}\partial_{x_1} f & \cdots & \partial_{x_m}\partial_{x_m} f \\
+    \end{pmatrix}
+  \]
+  Because (almost always) the order of differentiation
+  does not matter, it is a symmetric matrix.
+\end{definition}
+
 
 \section{Methods for maximization and minimization problems}
 
@@ -196,30 +246,10 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
   vector \(\vec{r} = \vec{e}_1\cos(\alpha) + \vec{e}_2\sin(\alpha)\)
 \end{remark}
 
-\begin{definition}[Hessian matrix]
-  Given a function \(f: \mathbb{R}^m \to \mathbb{R}\), the square matrix whose
-  entry at the \(i\)-th row and \(j\)-th column is the second derivative of
-  \(f\) first with respect to \(x_j\) and then to \(x_i\) is know as the
-  \emph{Hessian} matrix.
-  \(
-    \left(\mtx{H}_f\right)_{i,j} = \partial_{x_i}\partial_{x_j} f
-  \)
-  or
-  \[
-    \mtx{H}_f = \begin{pmatrix}
-      \partial_{x_1}\partial_{x_1} f & \cdots & \partial_{x_1}\partial_{x_m} f \\
-      \vdots & \ddots & \vdots \\
-      \partial_{x_m}\partial_{x_1} f & \cdots & \partial_{x_m}\partial_{x_m} f \\
-    \end{pmatrix}
-  \]
-  Because (almost always) the order of differentiation
-  does not matter, it is a symmetric matrix.
-\end{definition}
-
 \begin{method}[Determine the type of stationary point in higher dimensions]
   Given a scalar function of two variables \(f(x,y)\) and a stationary point
   \(\vec{x}_s\) (where \(\grad f(\vec{x}_s) = \vec{0}\)), we compute the
-  Hessian matrix \(\mtx{H}_f(\vec{x}_s)\). Then we compute its eigenvalues
+  Hessian matrix \(\mx{H}_f(\vec{x}_s)\). Then we compute its eigenvalues
   \(\lambda_1, \ldots, \lambda_m\) and
   \begin{itemize}
     \item if all \(\lambda_i > 0\), the point is a minimum;
@@ -233,23 +263,20 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
 
 \begin{remark}
   Recall that to compute the eigenvalues of a matrix, one must solve the
-  equation \((\mtx{H} - \lambda\mtx{I})\vec{x} = \vec{0}\). Which can be done
-  by solving the characteristic polynomial \(\det\left(\mtx{H} -
-  \lambda\mtx{I}\right) = 0\) to obtain \(\dim(\mtx{H})\) \(\lambda_i\), which
+  equation \((\mx{H} - \lambda\mx{I})\vec{x} = \vec{0}\). Which can be done
+  by solving the characteristic polynomial \(\det\left(\mx{H} -
+  \lambda\mx{I}\right) = 0\) to obtain \(\dim(\mx{H})\) \(\lambda_i\), which
   when plugged back in result in a overdetermined system of equations.
 \end{remark}
 
 \begin{method}[Quickly find the eigenvalues of a \(2\times 2\) matrix]
   Let
   \[
-    m = \frac{1}{2}\tr \mtx{H} = \frac{a + d}{2}
-    \text{  and  }
-    p = \det\mtx{H} = ad - bc ,
+    m = \frac{1}{2}\tr \mx{H} = \frac{a + d}{2} ,
+    \qquad
+    p = \det\mx{H} = ad - bc ,
   \]
-  then
-  \[
-    \lambda = m \pm \sqrt{m^2 - p} .
-  \]
+  then \(\lambda = m \pm \sqrt{m^2 - p}\).
 \end{method}
 
 \begin{method}[Search for a constrained extremum in 2 dimensions]
@@ -272,6 +299,15 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
       \]
   \end{itemize}
 \end{method}
+
+\begin{figure}
+  \centering
+  \includegraphics{img/lagrange-multipliers}
+  \caption{
+    Intuition for the method of Lagrange multipliers.  Extrema of a constrained
+    function are where \(\grad f\) is proportional to \(\grad n\).
+  }
+\end{figure}
 
 \begin{method}[%
     Search for a constrained extremum in higher dimensions,
@@ -305,16 +341,80 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
         \mathcal{L}(\vec{u}, \vec{\lambda}) 
           = f(\vec{u}) - \sum_{i = 0}^k \lambda_i n_i(\vec{u})
       \]
-      where \(\vec{\lambda} = \lambda_1, \ldots, \lambda_k\) and then
-      evaluating \(\grad \mathcal{L}(\vec{u}, \vec{\lambda}) = \vec{0}\).
+      where \(\vec{\lambda} = \lambda_1, \ldots, \lambda_k\) and then solving
+      \(\grad \mathcal{L}(\vec{u}, \vec{\lambda}) = \vec{0}\).  This is
+      generally used in numerical computations and not very useful by hand.
   \end{itemize}
 \end{method}
 
-\section{Integration}
-\begin{remark}
-  
-\end{remark}
+\section{Integration of vector values scalar functions}
 
+\begin{figure}
+  \centering
+  \includegraphics{img/double-integral}
+  \caption{
+    Double integral.
+    \label{fig:double-integral}
+  }
+\end{figure}
+
+\begin{theorem}[Change the order of integration for double integrals] For a
+  double integral over a region \(S\) (see Fig.  \ref{fig:double-integral}) we
+  need to compute
+  \[
+    \iint_S f(x,y) \,ds =
+      \int\limits_{x_1}^{x_2} \int\limits_{y_1(x)}^{y_2(x)} f(x,y) \,dydx .
+  \]
+  If \(y_1(x)\) and \(y_2(x)\) are bijective we can swap the order of
+  integration by finding the inverse functions \(x_1(y)\) and \(x_2(y)\). If
+  they are not bijective (like in Fig. \ref{fig:double-integral}), the region
+  must be split into smaller parts. If the region is a rectangle it is always
+  possible to change the order of integration.
+\end{theorem}
+
+\begin{theorem}[Transformation of coordinates in 2 dimensions]
+  \label{thm:transform-coords}
+  Given two ``nice'' functions \(x(u,v)\) and \(y(u,v)\), that means are a
+  bijection from \(S\) to \(S'\) with continuous partial derivatives and
+  nonzero Jacobian determinant \(|\mx{J}_f| = \partial_u x \partial_v y -
+  \partial_v x \partial_u y\), which transform the coordinate system. Then
+  \[
+    \iint_S f(x,y) \,ds = \iint_{S'} f(x(u,v), y(u,v)) |\mx{J}_f| \,ds
+  \]
+\end{theorem}
+
+\begin{theorem}[Transformation of coordinates]
+  The generalization of theorem \ref{thm:transform-coords} is quite simple.
+  For an \(n\)-integral of a function \(f:\mathbb{R}^m\to\mathbb{R}\) over a
+  region \(B\), we let \(\vec{x}(\vec{u})\) be ``nice'' functions that
+  transform the coordinate system. Then as before
+  \[
+    \int_B f(\vec{x}) \,ds = \int_{B'} f(\vec{x}(\vec{u})) |\mx{J}_f| \,ds
+  \]
+\end{theorem}
+
+\begin{table}
+  \centering
+  \begin{tabular}{l >{\(}l<{\)} >{\(}l<{\)}}
+    \toprule
+    & \text{Volume } dv & \text{Surface } d\vec{s}\\
+    \midrule
+    Cartesian & - & dx\,dy     \\
+    Polar     & - & rd\,rd\phi \\
+    Curvilinear & - & |\mx{J}_f|\,du\,dv \\
+    \midrule
+    Cartesian   & dx\,dy\,dz                         & \uvec{z}\,dx\,dy     \\
+    Cylindrical & r\,dr\,d\phi\,dz                   & \uvec{z}r\,dr\,d\phi \\
+                &                                    & \uvec{\phi}\,dr\,dz  \\
+                &                                    & \uvec{r}r\,d\phi\,dz \\
+    Spherical   & r^2\sin\theta\, dr\,d\theta\,d\phi & \uvec{r}r^2\sin\theta\,d\theta\,d\phi \\
+    Curvilinear & |\mx{J}_f|\,du\,dv\,dw & - \\
+    \bottomrule
+  \end{tabular}
+  \caption{Differential elements for integration.}
+\end{table}
+
+\section{Derivatives of curves}
 
 \section*{License}
 \doclicenseText
