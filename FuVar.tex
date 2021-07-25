@@ -31,6 +31,7 @@
 %% Layout
 \usepackage{enumitem}
 \usepackage{booktabs}
+\usepackage{footmisc}
 
 %% Nice drwaings
 \usepackage{tikz}
@@ -91,16 +92,17 @@ These are just my personal notes of the \themodule{} course, and definitively
 not a rigorously constructed mathematical text. The good looking \LaTeX{}
 typesetting may trick you into thinking it is rigorous, but really, it is not.
 
-\section{Derivatives of vector valued functions}
+\section{Derivatives of vector valued scalar functions}
 
 \begin{definition}[Partial derivative]
-  A vector values function \(f: \mathbb{R}^m\to\mathbb{R}\), with
+  A vector valued function \(f: \mathbb{R}^m\to\mathbb{R}\), with
   \(\vec{v}\in\mathbb{R}^m\), has a partial derivative with respect to \(v_i\)
   defined as
   \[
     \partial_{v_i} f(\vec{v})
-      = f_{v_i}(\vec{v})
-      = \lim_{h\to 0} \frac{f(\vec{v} + h\vec{e}_j) - f(\vec{v})}{h}
+      % = f_{v_i}(\vec{v})
+      = \frac{\partial f}{\partial v_i}
+      = \lim_{h\to 0} \frac{f(\vec{v} + h\vec{e}_i) - f(\vec{v})}{h}
   \]
 \end{definition}
 
@@ -113,17 +115,41 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
   \]
 \end{theorem}
 
-\begin{definition}[Linearization]
+\begin{application}[Find the slope of an implicit curve]
+  Let \(f(x,y) = 0\) be an implicit curve. It's slope at any point where
+  \(\partial_y f \neq 0\) is \(m = - \partial_x f / \partial_y f\)
+\end{application}
+
+\begin{definition}[Total differential]
+  The total differential \(df\) of \(f:\mathbb{R}^m\to\mathbb{R}\) is
+  \[
+    df = \sum_{i=0}^m \partial_{x_i} f\cdot dx .
+  \]
+  That reads, the \emph{total} change is the sum of the change in each
+  direction. This implies
+  \[
+    \frac{df}{dx_k} = \frac{\partial f}{\partial x_k} + 
+      \sum_{i \in \{1 \leq i \leq m : i \neq k\}}
+      \frac{\partial f}{\partial x_i} \cdot \frac{dx_i}{dx_k} ,
+  \]
+  i.e. the change in direction \(x_k\) is how \(f\) changes in \(x_k\)
+  (ignoring other directions) plus, how \(f\) changes with respect to each
+  other variable \(x_i\) times how it (\(x_i\)) changes with respect to \(x_k\).
+\end{definition}
+
+\begin{application}[Linearization]
   A function \(f: \mathbb{R}^m\to\mathbb{R}\) has a linearization \(g\) at
   \(\vec{x}_0\) given by
   \[
     g(\vec{x}) = f(\vec{x}_0) 
       + \sum_{i=1}^m \partial_{x_i} f(\vec{x}_0)(x_i - x_{i,0}) ,
   \]
-  if all partial derviatives are defined at \(\vec{x}_0\).
-\end{definition}
+  if all partial derivatives are defined at \(\vec{x}_0\). With the gradient
+  (defined below) \(g(\vec{x}) = f(\vec{x}_0) + \grad f(\vec{x}_0) \dotp
+  (\vec{x} - \vec{x}_0)\).
+\end{application}
 
-\begin{theorem}[Propagation of uncertanty]
+\begin{application}[Propagation of uncertanty]
   Given a measurement of \(m\) values in a vector \(\vec{x}\in\mathbb{R}^m\)
   with values given in the form \(x_i = \bar{x}_i \pm \sigma_{x_i}\), a linear
   approximation the error of a dependent variable \(y\) is computed with
@@ -132,7 +158,7 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
       \pm \sqrt{\sum_{i=1}^m \left(
         \partial_{x_i} f(\bar{\vec{x}}) \sigma_{x_i}\right)^2}
   \]
-\end{theorem}
+\end{application}
 
 \begin{definition}[Gradient vector]
   The \emph{gradient} of a function \(f(\vec{x}), \vec{x}\in\mathbb{R}^m\) is a
@@ -150,19 +176,19 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
   \]
 \end{definition}
 
+\begin{theorem}
+  The gradient vector always points towards \emph{the direction of steepest
+  ascent}, and thus is always perpendicular to contour lines.
+\end{theorem}
+
 \begin{definition}[Directional derivative]
   A function \(f(\vec{x})\) has a directional derivative in direction
-  \(\vec{r}\) (with \(|\vec{r}| = 1\)) given by
+  \(\vec{r}\) (with \(|\vec{r}|=1\)) of
   \[
     \frac{\partial f}{\partial\vec{r}} 
       = \nabla_\vec{r} f = \vec{r} \dotp \grad f
   \]
 \end{definition}
-
-\begin{theorem}
-  The gradient vector always points towards \emph{the direction of steepest
-  ascent}.
-\end{theorem}
 
 \begin{definition}[Jacobian Matrix]
   The \emph{Jacobian} \(\mx{J}_f\) (sometimes written as
@@ -192,7 +218,7 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
 \begin{definition}[Hessian matrix]
   Given a function \(f: \mathbb{R}^m \to \mathbb{R}\), the square matrix whose
   entry at the \(i\)-th row and \(j\)-th column is the second derivative of
-  \(f\) first with respect to \(x_j\) and then to \(x_i\) is know as the
+  \(f\) first with respect to \(x_j\) and then to \(x_i\) is known as the
   \emph{Hessian} matrix.
   \(
     \left(\mx{H}_f\right)_{i,j} = \partial_{x_i}\partial_{x_j} f
@@ -212,11 +238,14 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
 
 \section{Methods for maximization and minimization problems}
 
+\subsection{Analytical methods}
+
 \begin{method}[Find stationary points]
   Given a function \(f: D \subseteq \mathbb{R}^m \to \mathbb{R}\), to
   find its maxima and minima we shall consider the points
   \begin{itemize}
-    \item that are on the boundary of the domain \(\partial D\),
+    \item that are on the boundary\footnote{If it belongs to \(f\).
+      \label{ftn:boundary}} of the domain \(\partial D\),
     \item where the gradient \(\grad f\) is not defined,
     \item that are stationary, i.e. where \(\grad f = \vec{0}\).
   \end{itemize}
@@ -243,14 +272,14 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
 \begin{remark}
   The previous method is obtained by studying the second directional derivative
   \(\nabla_\vec{r}\nabla_\vec{r} f\) at the stationary point in direction of a
-  vector \(\vec{r} = \vec{e}_1\cos(\alpha) + \vec{e}_2\sin(\alpha)\)
+  vector \(\vec{r} = \vec{e}_1\cos(\alpha) + \vec{e}_2\sin(\alpha)\).
 \end{remark}
 
 \begin{method}[Determine the type of stationary point in higher dimensions]
-  Given a scalar function of two variables \(f(x,y)\) and a stationary point
-  \(\vec{x}_s\) (where \(\grad f(\vec{x}_s) = \vec{0}\)), we compute the
-  Hessian matrix \(\mx{H}_f(\vec{x}_s)\). Then we compute its eigenvalues
-  \(\lambda_1, \ldots, \lambda_m\) and
+  Given a scalar function of multiple variables \(f(\vec{x})\) and a stationary
+  point \(\vec{x}_s\) (\(\grad f(\vec{x}_s) = \vec{0}\)), we compute the
+  Hessian matrix \(\mx{H}_f(\vec{x}_s)\) and its eigenvalues \(\lambda_1,
+  \ldots, \lambda_m\), then
   \begin{itemize}
     \item if all \(\lambda_i > 0\), the point is a minimum;
     \item if all \(\lambda_i < 0\), the point is a maximum;
@@ -284,7 +313,8 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
   \(f: D \subseteq \mathbb{R}^2 \to \mathbb{R}\). To find the extrema we look for
   points
   \begin{itemize}
-    \item on the boundary \(\vec{u} \in \partial D\) where \(n(\vec{u}) = 0\);
+    \item on the boundary\footref{ftn:boundary} \(\vec{u} \in \partial D\)
+      where \(n(\vec{u}) = 0\);
 
     \item \(\vec{u}\) where the gradient either does not exist or is
       \(\vec{0}\), and satisfy \(n(\vec{u}) = 0\);
@@ -316,7 +346,7 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
   under \(k < m\) constraints \(n_1 = 0, \cdots, n_k = 0\). To find the extrema 
   we consider the following points:
   \begin{itemize}
-    \item Points on the boundary \(\vec{u} \in \partial D\) that satisfy
+    \item Points on the boundary\footref{ftn:boundary} \(\vec{u} \in \partial D\) that satisfy
       \(n_i(\vec{u}) = 0\) for all \(1 \leq i \leq k\), 
 
     \item Points \(\vec{u} \in D\) where either
@@ -336,18 +366,56 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
       \]
       The \(\lambda\) values are known as \emph{Lagrange multipliers}. The same
       calculation can be written more compactly by defining the
-      \(m+k\) dimensional \emph{Lagrangian}
+      \emph{Lagrangian}
       \[
         \mathcal{L}(\vec{u}, \vec{\lambda}) 
-          = f(\vec{u}) - \sum_{i = 0}^k \lambda_i n_i(\vec{u})
+          = f(\vec{u}) - \sum_{i = 0}^k \lambda_i n_i(\vec{u}),
       \]
       where \(\vec{\lambda} = \lambda_1, \ldots, \lambda_k\) and then solving
-      \(\grad \mathcal{L}(\vec{u}, \vec{\lambda}) = \vec{0}\).  This is
-      generally used in numerical computations and not very useful by hand.
+      the \(m+k\) dimensional equation \(\grad \mathcal{L}(\vec{u},
+      \vec{\lambda}) = \vec{0}\) (this is generally used in numerical
+      computations and not very useful by hand).
   \end{itemize}
 \end{method}
 
-\section{Integration of vector values scalar functions}
+\subsection{Numerical methods}
+
+\begin{method}[Newton's method]
+  For a function \(f:\mathbb{R}^m\to\mathbb{R}\) we wish to numerically find
+  its stationary points (where \(\grad f = \vec{0}\)).
+  \begin{enumerate}
+    \item Pick a starting point \(\vec{x}_0\)
+    \item Set the linearisation\footnote{The gradient becomes a hessian matrix.}
+      of \(\grad f\) at \(\vec{x}_k\) to zero and
+      solve for \(\vec{x}_{k+1}\)
+      \begin{gather*}
+        \grad f(\vec{x}_k) + \mx{H}_f (\vec{x}_k)
+          (\vec{x}_{k+1} - \vec{x}_k) = \vec{0} \\
+          \vec{x}_{k+1} = \vec{x}_k - \mx{H}_f^{-1} (\vec{x}_k) \grad f(\vec{x}_k)
+      \end{gather*}
+    \item Repeat the last step until the magnitude of the error
+      \(|\vec{\epsilon}| = |\mx{H}_f^{-1} (\vec{x}_k) \grad f(\vec{x}_k)|\) is
+      sufficiently small.
+  \end{enumerate}
+\end{method}
+
+\begin{method}[Gradient ascent / descent]
+  Given \(f:\mathbb{R}^m\to\mathbb{R}\) we wish to numerically find
+  the stationary points (where \(\grad f = \vec{0}\)).
+  \begin{enumerate}
+    \item Define an arbitrarily small length \(\eta\) and a starting point
+      \(\vec{x}_0\)
+    \item Compute \(\vec{v} = \pm\grad f(\vec{x}_k)\) (positive for ascent,
+      negative for descent), then \(\vec{x}_{k+1} = \vec{x}_k + \eta\vec{v}\)
+      if the rate of change \(\epsilon\) is acceptable (\(\epsilon = |\grad
+      f(\vec{x}_{k+1})| > 0\)) else recompute \(\vec{v} := \pm \grad
+      f(\vec{x}_{k+1})\).
+    \item Stop when the rate of change \(\epsilon\) stays small enough for many
+      iterations.
+  \end{enumerate}
+\end{method}
+
+\section{Integration of vector valued scalar functions}
 
 \begin{figure}
   \centering
@@ -385,7 +453,7 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
 
 \begin{theorem}[Transformation of coordinates]
   The generalization of theorem \ref{thm:transform-coords} is quite simple.
-  For an \(n\)-integral of a function \(f:\mathbb{R}^m\to\mathbb{R}\) over a
+  For an \(m\)-integral of a function \(f:\mathbb{R}^m\to\mathbb{R}\) over a
   region \(B\), we let \(\vec{x}(\vec{u})\) be ``nice'' functions that
   transform the coordinate system. Then as before
   \[
@@ -407,14 +475,153 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
     Cylindrical & r\,dr\,d\phi\,dz                   & \uvec{z}r\,dr\,d\phi \\
                 &                                    & \uvec{\phi}\,dr\,dz  \\
                 &                                    & \uvec{r}r\,d\phi\,dz \\
-    Spherical   & r^2\sin\theta\, dr\,d\theta\,d\phi & \uvec{r}r^2\sin\theta\,d\theta\,d\phi \\
+    Spherical   & r^2\sin\theta\, dr\,d\theta\,d\phi & 
+      \uvec{r}r^2\sin\theta\,d\theta\,d\phi \\
     Curvilinear & |\mx{J}_f|\,du\,dv\,dw & - \\
     \bottomrule
   \end{tabular}
   \caption{Differential elements for integration.}
 \end{table}
 
-\section{Derivatives of curves}
+\begin{application}[Physics]
+  Given the mass \(m\) and density function \(\rho\) of an object,
+  its \emph{center of mass} is calculated with
+  \[
+    \vec{x}_c = \frac{1}{m}\int_V \vec{x}\rho(\vec{x}) \,dv
+      \stackrel{\rho\text{ const.}}{=} \frac{1}{V} \int_V \vec{x}\,dv .
+  \]
+  The (scalar) \emph{moment of inertia} \(J\) of an object is given by
+  \[
+    J = \int_V \rho(\vec{r}) r^2 \,dv .
+  \]
+  % and similarly the \emph{area moment of inertia} \(I\)
+\end{application}
+
+\section{Parametric curves and line integrals}
+
+\begin{definition}[Parametric curve]
+  A parametric curve is a vector function \(\mathcal{C} : \mathbb{R} \to W
+  \subseteq \mathbb{R}^n, t \mapsto \vec{f}(t)\), that takes a parameter \(t\).
+\end{definition}
+
+\begin{definition}[Multivariable chain rule]
+  Let \(\vec{x}: \mathbb{R} \to \mathbb{R}^m\) and \(f: \mathbb{R}^m \to
+  \mathbb{R}\), so that \(f\circ\vec{x}: \mathbb{R} \to \mathbb{R}\), then
+  the multivariable chain rule states:
+  \[
+    \frac{d}{dt}f(\vec{x}(t)) = \grad f (\vec{x}(t)) \dotp \vec{x}'(t)
+      = \nabla_{\vec{x}'(t)} f(\vec{x}(t))
+  \]
+\end{definition}
+
+\begin{theorem}[Signed area enclosed by a planar parametric curve]
+  A planar (2D) parametric curve \((x(t), y(t))^t\) with \(t\in[r,s]\) that does
+  not intersect itself encloses a surface with area
+  \[
+    A = \int_r^s x'(t)y(t) \,dt
+      = \int_r^s x(t)y'(t) \,dt
+  \]
+\end{theorem}
+
+\begin{theorem}[Derivative of a curve]
+  The derivative of a curve is
+  \begin{align*}
+    \vec{f}'(t) &= \lim_{h\to 0} \frac{\vec{f}(t + h) - \vec{f}(t)}{h} \\
+    &= \sum_{i=0}^n \left(\lim_{h\to 0} \frac{f_i(t+h) - f_i(t)}{h}\right) \vec{e}_i \\
+    &= \sum_{i=0}^n \frac{df_i}{dt}\vec{e}_i
+    = \left(\frac{df_1}{dt}, \ldots, \frac{df_m}{dt}\right)^t
+  \end{align*}
+\end{theorem}
+
+\begin{definition}[Line integral in a scalar field]
+  Let \(\mathcal{C}:[a,b]\to\mathbb{R}^n, t \mapsto \vec{x}(t)\) be a
+  parametric curve. The \emph{line integral} in a field \(f(\vec{x})\) is the
+  integral of the signed area under the curve traced in \(\mathbb{R}^n\), and
+  is computed with
+  \[
+    \int_\mathcal{C} f(\vec{x}) \,d\ell 
+    = \int_\mathcal{C} f(\vec{x}) \,|d\vec{x}|
+    = \int_a^b f(\vec{x}(t)) |\vec{x}'(t)| \, dt
+  \]
+\end{definition}
+
+\begin{application}[Length of a parametric curve]
+  By computing the line integral of the function \(\vec{1}(t) = 1\) we get the
+  length of the parametric curve \(\mathcal{C}:[a,b]\to\mathbb{R}^n\).
+  \[
+    \int_\mathcal{C}d\ell 
+    = \int_\mathcal{C} |d\vec{x}|
+    = \int_a^b \sqrt{\sum_{i=1}^n x'_i(t)^2} \,dt
+  \]
+  In the special case with the scalar function \(f(x)\) results in
+  \(\int_a^b\sqrt{1+f'(x)^2}\,dx\)
+\end{application}
+
+\begin{definition}[Line integral in a vector field]
+  The line integral in a vector field \(\vec{F}(\vec{x})\) is ``sum'' of the
+  projections of the field's vectors on the tangent of the parametric curve
+  \(\mathcal{C}\).
+  \[
+    \int_\mathcal{C} \vec{F}(\vec{r})\dotp d\vec{r}
+    = \int_a^b \vec{F}(\vec{r}(t))\dotp \vec{r}'(t) \,dt
+  \]
+\end{definition}
+
+\begin{theorem}[Line integral in the opposite direction]
+  By integrating while moving backwards (\(-t\)) on the parametric curve gives
+  \[
+    \int_{-\mathcal{C}} \vec{F}(\vec{r})\dotp d\vec{r}
+    = -\int_{\mathcal{C}} \vec{F}(\vec{r})\dotp d\vec{r}
+  \]
+\end{theorem}
+
+\begin{definition}[Conservative field]
+  A vector field is said to be \emph{conservative} the line integral over a
+  closed path is zero.
+  \[
+    \oint_\mathcal{C} \vec{F}(\vec{r})\cdot d\vec{r} = 0
+  \]
+\end{definition}
+
+\begin{theorem}
+  For a twice partially differentiable vector field \(\vec{F}(\vec{x})\) in
+  \(n\) dimensions without ``holes'', i.e. in which each closed curve can be
+  contracted to a point (simply connected open set), the following statements
+  are equivalent:
+  \begin{itemize}
+    \item \(\vec{F}\) is conservative
+    \item \(\vec{F}\) is path-independent
+    \item \(\vec{F}\) is a \emph{gradient field}, i.e. there is a
+      function \(\phi\) called \emph{potential} such that \(\vec{F} = \grad
+      \phi\)
+    \item \(\vec{F}\) satisfies the condition \(\partial_{x_j} F_i =
+      \partial_{x_i} F_j\) for all \(i,j \in \{1,2,\ldots,n\}\). In the 2D case
+      \(\partial_x F_y = \partial_y F_x\), and in 3D
+      \[
+        \begin{cases}
+          \partial_y F_x = \partial_x F_y \\
+          \partial_z F_y = \partial_y F_z \\
+          \partial_x F_z = \partial_z F_x \\
+        \end{cases}
+      \]
+  \end{itemize}
+\end{theorem}
+
+\begin{theorem}
+  In a conservative field \(\vec{F}\) with gradient \(\phi\), using the
+  multivariable the chain rule:
+  \begin{align*}
+    \int_\mathcal{C} \vec{F} \dotp d\vec{r} 
+    &= \int_\mathcal{C} \vec{F}(\vec{r}(t)) \dotp \vec{r}'(t) \,dt \\
+    &= \int_\mathcal{C} \grad \phi(\vec{r}(t)) \cdot \vec{r}'(t) \,dt \\
+    &= \int_\mathcal{C} \frac{d\phi(\vec{r}(t))}{dt}\,dt
+    = \phi(\vec{r}(b)) - \phi(\vec{r}(a))
+  \end{align*}
+\end{theorem}
+
+\section{Surface integrals}
+
+\section{Vector analysis}
 
 \section*{License}
 \doclicenseText
