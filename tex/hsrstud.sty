@@ -176,7 +176,7 @@
 
 %% Products ((
 \newcommand{\dotp}{\boldsymbol\cdot}
-\newcommand{\crossp}{\boldsymbol\crossp}
+\newcommand{\crossp}{\boldsymbol\times}
 \newcommand{\cross}{\crossp}
 %%))
 
@@ -222,9 +222,15 @@
 
 %% laplacian ((
 \ifhsr@textvecdiff
-    \DeclareMathOperator{\laplace}{div grad}
+    \DeclareMathOperator{\laplacian}{div grad}
 \else
-    \DeclareMathOperator{\laplace}{\nabla^2}
+    \DeclareMathOperator{\laplacian}{\nabla^2}
+\fi
+
+\ifhsr@textvecdiff
+    \DeclareMathOperator{\vlaplacian}{div grad}
+\else
+	\DeclareMathOperator{\vlaplacian}{\vec{\nabla}^2}
 \fi
 %% ))
 

@@ -3,7 +3,7 @@
 % !TeX root = FuVar.tex
 
 %% TODO: publish to CTAN
-\documentclass[twocolumn, margin=normal]{tex/hsrzf}
+\documentclass[twocolumn, margin=small]{tex/hsrzf}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Packages
@@ -498,7 +498,7 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
   % and similarly the \emph{area moment of inertia} \(I\)
 \end{application}
 
-\section{Parametric curves and line integrals}
+\section{Parametric curves, line and surface integrals}
 
 \begin{definition}[Parametric curve]
   A parametric curve is a vector function \(\mathcal{C} : \mathbb{R} \to W
@@ -620,9 +620,181 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
   \end{align*}
 \end{theorem}
 
-\section{Surface integrals}
+\begin{definition}[Parametric surface]
+  A parametric surface is a vector function \(\mathcal{S}: W \subseteq \mathbb{R}^2 \to
+  \mathbb{R}^3\).
+\end{definition}
+
+\begin{theorem}[Area of a parametric surface]
+  The area spanned by a parametric surface \(\vec{s}(u,v)\), with continuous
+  partial derivatives and that satisfy \(\partial_u \vec{s} \crossp \partial_v
+  \vec{s} \neq \vec{0}\), is given by
+  \[
+    A = \int_\mathcal{S} ds 
+      = \iint |\partial_u \vec{s} \crossp \partial_v \vec{s}| \,dudv
+  \]
+\end{theorem}
+
+\begin{definition}[Scalar surface integral]
+  Let \(f: \mathbb{R}^3 \to \mathbb{R}\) be a function on a parametric surface
+  \(\vec{s}: W \subseteq \mathbb{R}^2 \to \mathbb{R}^3\).  The surface integral
+  of \(f\) over \(\mathcal{S}\) is
+  \[
+    \int_\mathcal{S} f \,ds = 
+      \iint_W f(\vec{s}(u,v)) \cdot 
+        |\partial_u \vec{s} \crossp \partial_v \vec{s}| \,dudv
+  \]
+\end{definition}
 
 \section{Vector analysis}
+
+\begin{definition}[Flux]
+  In a vector field \(\vec{F}: \mathbb{R}^m \to \mathbb{R}^n\) we define the
+  \emph{flux} through a parametric surface \(\mathcal{S}\) as
+  \[
+    \Phi = \int_\mathcal{S} \vec{F} \dotp d\vec{s} 
+      = \int_\mathcal{S} \vec{F} \dotp \uvec{n} \,ds .
+  \]
+  If \(\mathcal{S}\) is a closed surface we write
+  \(
+    \mathring{\Phi} = \oint_\mathcal{S} \vec{F} \dotp d\vec{s}
+  \).
+\end{definition}
+
+If we now take the normalized flux on the surface of an arbitrarily small
+(limit) volume \(V\) we get the \emph{divergence}
+\[
+  \div \vec{F} = \lim_{V\to 0} \frac{1}{V} \oint_{\partial V} \vec{F}\dotp d\vec{s} .
+\]
+
+\begin{theorem}[Formula for divergence]
+  Let \(\vec{F}: \mathbb{R}^m \to \mathbb{R}^m\) be a vector field.
+  The divergence of \(\vec{F} = (F_{x_1},\ldots, F_{x_m})^t\) is
+  \[
+    \div\vec{F} = \sum_{i = 1}^m \partial_{x_i} F_{x_i} ,
+  \]
+  as suggested by the (ab)use of the dot product notation.
+\end{theorem}
+
+\begin{theorem}[Divergence theorem, Gauss's theorem]
+  Because the flux on the boundary \(\partial V\) of a volume \(V\) contains
+  information of the field inside of \(V\), it is possible relate the two with
+  \[
+    \int_V \div \vec{F} \,dv = \oint_{\partial V} \vec{F} \dotp d\vec{s} .
+  \]
+\end{theorem}
+
+\begin{definition}[Circulation, Vorticity]
+  The result of a closed line integral can be interpreted as a macroscopic
+  measure how much the field rotates around a given point, and is thus
+  sometimes called \emph{circulation} or \emph{vorticity}.
+\end{definition}
+
+As before, if we now make the area \(A\) enclosed by the parametric curve for
+the circulation arbitrarily small, normalize it, and use Gauss's theorem we get
+a local measure called \emph{curl}
+\[
+  \curl \vec{F} =
+  \lim_{A\to 0} \frac{\uvec{n}}{A} \oint_{\partial A} \vec{F} \dotp d\vec{s}
+\]
+Notice that the curl is a vector, normal to the enclosed surface \(A\).
+
+\begin{theorem}[Formula for curl]
+  Let \(\vec{F}\) be a vector field. In 2 dimensions
+  \[
+    \curl \vec{F} = \left(\partial_x F_y - \partial_y F_x\right)\uvec{z}.
+  \]
+  And in 3D
+  \[
+    \curl \vec{F} = \begin{pmatrix}
+      \partial_y F_z - \partial_z F_y \\
+      \partial_z F_x - \partial_x F_z \\
+      \partial_x F_y - \partial_y F_x
+    \end{pmatrix}
+    = \begin{vmatrix}
+      \uvec{x} & \uvec{y} & \uvec{z} \\
+      \partial_x & \partial_y & \partial_z \\
+      F_x & F_y & F_z
+    \end{vmatrix} .
+  \]
+\end{theorem}
+
+\begin{theorem}[Stokes' theorem]
+  \[
+    \int_\mathcal{S} \curl \vec{F} \dotp d\vec{s}
+    = \oint_{\partial\mathcal{S}} \vec{F} \dotp d\vec{r}
+  \]
+\end{theorem}
+
+\begin{theorem}[Green's theorem]
+  The special case of Stokes' theorem in 2D is knowns as Green's theorem.
+  \[
+    \int_\mathcal{S} \partial_x F_y - \partial_y F_x \,ds
+    = \oint_{\partial\mathcal{S}} \vec{F} \dotp d\vec{r}
+  \]
+\end{theorem}
+
+\begin{definition}[Laplacian operator]
+  A second vector derivative is so important that it has a special name.  For a
+  scalar function \(f: \mathbb{R}^m \to \mathbb{R}\) the divergence of the
+  gradient
+  \[
+    \laplacian = \div (\grad f) = \sum_{i=1}^m \partial_{x_i}^2 f_{x_i}
+  \]
+  is called the \emph{Laplacian operator}.
+\end{definition}
+
+\begin{definition}[Vector Laplacian]
+  The Laplacian operator can be extended on a vector field \(\vec{F}\) to the 
+  \emph{Laplacian vector} by applying the Laplacian to each component:
+  \[
+    \vlaplacian \vec{F} 
+      = (\laplacian F_x)\uvec{x} 
+      + (\laplacian F_y)\uvec{y} 
+      + (\laplacian F_z)\uvec{z} .
+  \]
+  The vector laplacian can also be defined as
+  \[
+    \vlaplacian \vec{F} = \grad (\div \vec{F}) - \curl (\curl \vec{F}).
+  \]
+\end{definition}
+
+\begin{theorem}[Product rules and second derivatives]
+  Let \(f,g\) be sufficiently differentiable scalar functions \(D
+  \subseteq\mathbb{R}^m \to \mathbb{R}\) and \(\vec{A}, \vec{B}\) be
+  sufficiently differentiable vector fields in \(\mathbb{R}^m\) (with \(m = 2\)
+  or 3 for equations with the curl).
+  \begin{itemize}
+    \item Rules with the gradient
+      \begin{align*}
+        \grad (\div \vec{A}) &= \curl \curl \vec{A} + \vlaplacian \vec{A} \\
+        \grad (f\cdot g) &= (\grad f)\cdot g + f\cdot \grad g \\
+        \grad (\vec{A} \dotp \vec{B}) &= 
+          (\vec{A} \dotp \grad) \vec{B}
+          + (\vec{B} \dotp \grad) \vec{A} \\
+          & + \vec{A} \crossp (\curl \vec{B})
+          + \vec{B} \crossp (\curl \vec{A})
+      \end{align*}
+    \item Rules with the divergence
+      \begin{align*}
+        \div (\grad f) &= \laplacian f \\
+        \div (\curl \vec{A}) &= 0 \\
+        \div (f\cdot \vec{A}) &= (\grad f) \dotp \vec{A} + f\cdot (\div \vec{A}) \\
+        \div (\vec{A}\crossp\vec{B}) &= (\curl \vec{A})\dotp \vec{B} 
+          - \vec{A} \cdot (\curl\vec{B})
+      \end{align*}
+    \item Rules with the curl
+      \begin{align*}
+        \curl (\grad f) &= \vec{0} \\
+        \curl (\curl \vec{A}) &= \grad (\div \vec{A}) - \vlaplacian \vec{A} \\
+        \curl (\vlaplacian \vec{A}) &= \vlaplacian (\curl \vec{A}) \\
+        \curl (f\cdot \vec{A}) &= (\grad f)\crossp \vec{A} + f\cdot \curl \vec{A} \\
+        \curl (\vec{A}\crossp\vec{B}) &= 
+          (\vec{B} \dotp \grad) \vec{A} - (\vec{A} \dotp \grad) \vec{B} \\
+          &+ \vec{A} \dotp (\div \vec{B}) - \vec{B} \dotp (\div \vec{A})
+      \end{align*}
+  \end{itemize}
+\end{theorem}
 
 \section*{License}
 \doclicenseText
