@@ -90,8 +90,7 @@
 \section{Preface}
 
 These are just my personal notes of the \themodule{} course, and definitively
-not a rigorously constructed mathematical text. The good looking \LaTeX{}
-typesetting may trick you into thinking it is rigorous, but really, it is not.
+not a rigorously constructed mathematical text.
 
 \section{Derivatives of vector valued scalar functions}
 
@@ -185,11 +184,11 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
 
 \begin{definition}[Directional derivative]
   A function \(f(\vec{x})\) has a directional derivative in direction
-  \(\vec{r}\) (with \(|\vec{r}|=1\)) of
+  \(\vec{v}\) (with \(|\vec{v}|=1\)) of
   \[
-    \frac{\partial f}{\partial\vec{r}} 
-      = \nabla_\vec{r} f = \vec{r} \dotp \grad f
-      = \sum_{i=1}^m r_i \partial_{x_i} f
+    \frac{\partial f}{\partial\vec{v}} 
+      = \nabla_\vec{v} f = \vec{v} \dotp \grad f
+      = \sum_{i=1}^m v_i \partial_{x_i} f
   \]
 \end{definition}
 
@@ -274,8 +273,8 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
 
 \begin{remark}
   The previous method is obtained by studying the second directional derivative
-  \(\nabla_\vec{r}\nabla_\vec{r} f\) at the stationary point in direction of a
-  vector \(\vec{r} = \vec{e}_1\cos(\alpha) + \vec{e}_2\sin(\alpha)\).
+  \(\nabla_\vec{v}\nabla_\vec{v} f\) at the stationary point in direction of a
+  vector \(\vec{v} = \vec{e}_1\cos(\alpha) + \vec{e}_2\sin(\alpha)\).
 \end{remark}
 
 \begin{method}[Determine the type of stationary point in higher dimensions]
@@ -447,51 +446,29 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
   \label{thm:transform-coords}
   Given two ``nice'' functions \(x(u,v)\) and \(y(u,v)\), that means are a
   bijection from \(S\) to \(S'\) with continuous partial derivatives and
-  nonzero Jacobian determinant \(|\mx{J}_f| = \partial_u x \partial_v y -
+  nonzero Jacobian determinant \(|\mx{J}| = \partial_u x \partial_v y -
   \partial_v x \partial_u y\), which transform the coordinate system. Then
   \[
-    \iint_S f(x,y) \,ds = \iint_{S'} f(x(u,v), y(u,v)) |\mx{J}_f| \,ds .
+    \iint_S f(x,y) \,ds = \iint_{S'} f(x(u,v), y(u,v)) |\mx{J}| \,ds .
   \]
 \end{theorem}
 
 \begin{theorem}[Transformation of coordinates]
   The generalization of theorem \ref{thm:transform-coords} is quite simple.
   For an \(m\)-integral of a function \(f:\mathbb{R}^m\to\mathbb{R}\) over a
-  region \(B\), we let \(\vec{x}(\vec{u})\) be ``nice'' functions that
+  region \(B\), we let \(\vec{g}(\vec{u})\) be ``nice'' functions that
   transform the coordinate system. Then as before
   \[
-    \int_B f(\vec{x}) \,ds = \int_{B'} f(\vec{x}(\vec{u})) |\mx{J}_f| \,ds .
+    \int_B f(\vec{r}) \,ds = \int_{B'} f(\vec{g}(\vec{u})) |\mx{J}_\vec{g}| \,ds .
   \]
 \end{theorem}
-
-\begin{table}
-  \centering
-  \begin{tabular}{l >{\(}l<{\)} >{\(}l<{\)}}
-    \toprule
-    & \text{Volume } dv & \text{Surface } d\vec{s}\\
-    \midrule
-    Cartesian & - & dx\,dy     \\
-    Polar     & - & rd\,rd\phi \\
-    Curvilinear & - & |\mx{J}_f|\,du\,dv \\
-    \midrule
-    Cartesian   & dx\,dy\,dz                         & \uvec{z}\,dx\,dy     \\
-    Cylindrical & r\,dr\,d\phi\,dz                   & \uvec{z}r\,dr\,d\phi \\
-                &                                    & \uvec{\phi}\,dr\,dz  \\
-                &                                    & \uvec{r}r\,d\phi\,dz \\
-    Spherical   & r^2\sin\theta\, dr\,d\theta\,d\phi & 
-      \uvec{r}r^2\sin\theta\,d\theta\,d\phi \\
-    Curvilinear & |\mx{J}_f|\,du\,dv\,dw & - \\
-    \bottomrule
-  \end{tabular}
-  \caption{Differential elements for integration.}
-\end{table}
 
 \begin{application}[Physics]
   Given the mass \(m\) and density function \(\rho\) of an object,
   its \emph{center of mass} is calculated with
   \[
-    \vec{x}_c = \frac{1}{m}\int_V \vec{x}\rho(\vec{x}) \,dv
-      \stackrel{\rho\text{ const.}}{=} \frac{1}{V} \int_V \vec{x}\,dv .
+    \vec{x}_c = \frac{1}{m}\int_V \rho(\vec{r})\vec{r} \,dv
+      \stackrel{\rho\text{ const.}}{=} \frac{1}{V} \int_V \vec{r}\,dv .
   \]
   The (scalar) \emph{moment of inertia} \(J\) of an object is given by
   \[
@@ -517,6 +494,14 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
   \end{align*}
 \end{theorem}
 
+% \begin{figure}
+%   \centering
+%   \includegraphics{img/multivariable-chain-rule}
+%   \caption{
+%     Multivariable chain rule.
+%   }
+% \end{figure}
+
 \begin{theorem}[Multivariable chain rule]
   Let \(\vec{x}: \mathbb{R} \to \mathbb{R}^m\) and \(f: \mathbb{R}^m \to
   \mathbb{R}\), so that \(f\circ\vec{x}: \mathbb{R} \to \mathbb{R}\), then
@@ -537,31 +522,39 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
 \end{theorem}
 
 \begin{definition}[Line integral in a scalar field]
-  Let \(\mathcal{C}:[a,b]\to\mathbb{R}^n, t \mapsto \vec{x}(t)\) be a
-  parametric curve. The \emph{line integral} in a field \(f(\vec{x})\) is the
+  Let \(\mathcal{C}:[a,b]\to\mathbb{R}^n, t \mapsto \vec{r}(t)\) be a
+  parametric curve. The \emph{line integral} in a field \(f(\vec{r})\) is the
   integral of the signed area under the curve traced in \(\mathbb{R}^n\), and
   is computed with
   \[
-    \int_\mathcal{C} f(\vec{x}) \,d\ell 
-    = \int_\mathcal{C} f(\vec{x}) \,|d\vec{x}|
-    = \int_a^b f(\vec{x}(t)) |\vec{x}'(t)| \, dt .
+    \int_\mathcal{C} f(\vec{r}) \,d\ell 
+    = \int_\mathcal{C} f(\vec{r}) \,|d\vec{r}|
+    = \int_a^b f(\vec{r}(t)) |\vec{r}'(t)| \, dt .
   \]
 \end{definition}
 
 \begin{application}[Length of a parametric curve]
-  By computing the line integral of the function \(1(\vec{x})\) we get the
+  By computing the line integral of the function \(1(\vec{r})\) we get the
   length of the parametric curve \(\mathcal{C}:[a,b]\to\mathbb{R}^n\).
   \[
     \int_\mathcal{C}d\ell 
-    = \int_\mathcal{C} |d\vec{x}|
+    = \int_\mathcal{C} |d\vec{r}|
     = \int_a^b \sqrt{\sum_{i=1}^n x'_i(t)^2} \,dt
   \]
   The special case with the scalar function \(f(x)\) results in
   \(\int_a^b\sqrt{1+f'(x)^2}\,dx\).
 \end{application}
 
+\begin{figure}
+  \centering
+  \includegraphics{img/line-integral}
+  \caption{
+    Line integral in a vector field.
+  }
+\end{figure}
+
 \begin{definition}[Line integral in a vector field]
-  The line integral in a vector field \(\vec{F}(\vec{x})\) is the ``sum'' of
+  The line integral in a vector field \(\vec{F}(\vec{r})\) is the ``sum'' of
   the projections of the field's vectors on the tangent of the parametric curve
   \(\mathcal{C}\).
   \[
@@ -587,7 +580,7 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
 \end{definition}
 
 \begin{theorem}
-  For a twice partially differentiable vector field \(\vec{F}(\vec{x})\) in
+  For a twice partially differentiable vector field \(\vec{F}\) in
   \(n\) dimensions without ``holes'', i.e. in which each closed curve can be
   contracted to a point (simply connected open set), the following statements
   are equivalent:
@@ -627,6 +620,14 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
   \mathbb{R}^3\).
 \end{definition}
 
+\begin{figure}
+  \centering
+  \includegraphics{img/surface-integral}
+  \caption{
+    Surface integral.
+  }
+\end{figure}
+
 \begin{theorem}[Area of a parametric surface]
   The area spanned by a parametric surface \(\vec{s}(u,v)\), with continuous
   partial derivatives and that satisfy \(\partial_u \vec{s} \crossp \partial_v
@@ -647,6 +648,28 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
         |\partial_u \vec{s} \crossp \partial_v \vec{s}| \,dudv .
   \]
 \end{definition}
+
+\begin{table}
+  \centering
+  \begin{tabular}{l >{\(}l<{\)} >{\(}l<{\)}}
+    \toprule
+    & \text{Volume } dv & \text{Surface } d\vec{s}\\
+    \midrule
+    Cartesian & - & dx\,dy     \\
+    Polar     & - & rd\,rd\phi \\
+    Curvilinear & - & |\mx{J}_f|\,du\,dv \\
+    \midrule
+    Cartesian   & dx\,dy\,dz                         & \uvec{z}\,dx\,dy     \\
+    Cylindrical & r\,dr\,d\phi\,dz                   & \uvec{z}r\,dr\,d\phi \\
+                &                                    & \uvec{\phi}\,dr\,dz  \\
+                &                                    & \uvec{r}r\,d\phi\,dz \\
+    Spherical   & r^2\sin\theta\, dr\,d\theta\,d\phi & 
+      \uvec{r}r^2\sin\theta\,d\theta\,d\phi \\
+    Curvilinear & |\mx{J}_f|\,du\,dv\,dw & - \\
+    \bottomrule
+  \end{tabular}
+  \caption{Differential elements for integration.}
+\end{table}
 
 \section{Vector analysis}
 
@@ -729,7 +752,7 @@ Notice that the curl is a vector, normal to the enclosed surface \(A\).
 \end{theorem}
 
 \begin{theorem}[Green's theorem]
-  The special case of Stokes' theorem in 2D is knowns as Green's theorem.
+  The special case of Stokes' theorem in 2D is known as Green's theorem.
   \[
     \int_\mathcal{S} \partial_x F_y - \partial_y F_x \,ds
     = \oint_{\partial\mathcal{S}} \vec{F} \dotp d\vec{r}
