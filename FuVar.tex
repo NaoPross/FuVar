@@ -52,7 +52,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Macros and settings
 
-\setlength{\droptitle}{-2cm}
+\setlength{\droptitle}{-1cm}
 
 %% Theorems
 \newtheoremstyle{fuvarzf} % name of the style to be used
@@ -117,14 +117,14 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
 \end{theorem}
 
 \begin{application}[Find the slope of an implicit curve]
-  Let \(f(x,y) = 0\) be an implicit curve. It's slope at any point where
+  Let \(f(x,y) = 0\) be an implicit curve. Its slope at any point where
   \(\partial_y f \neq 0\) is \(m = - \partial_x f / \partial_y f\)
 \end{application}
 
 \begin{definition}[Total differential]
   The total differential \(df\) of \(f:\mathbb{R}^m\to\mathbb{R}\) is
   \[
-    df = \sum_{i=0}^m \partial_{x_i} f\cdot dx .
+    df = \sum_{i=1}^m \partial_{x_i} f\cdot dx .
   \]
   That reads, the \emph{total} change is the sum of the change in each
   direction. This implies
@@ -135,7 +135,7 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
   \]
   i.e. the change in direction \(x_k\) is how \(f\) changes in \(x_k\)
   (ignoring other directions) plus, how \(f\) changes with respect to each
-  other variable \(x_i\) times how it (\(x_i\)) changes with respect to \(x_k\).
+  other variable \(x_i\) times how they (\(x_i\)) change with respect to \(x_k\).
 \end{definition}
 
 \begin{application}[Linearization]
@@ -153,7 +153,8 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
 \begin{application}[Propagation of uncertanty]
   Given a measurement of \(m\) values in a vector \(\vec{x}\in\mathbb{R}^m\)
   with values given in the form \(x_i = \bar{x}_i \pm \sigma_{x_i}\), a linear
-  approximation the error of a dependent variable \(y\) is computed with
+  approximation of the error of a dependent variable \(y = f(\vec{x})\) is
+  computed with
   \[
     y = \bar{y} \pm \sigma_y \approx f(\bar{\vec{x}})
       \pm \sqrt{\sum_{i=1}^m \left(
@@ -165,8 +166,8 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
   The \emph{gradient} of a function \(f(\vec{x}), \vec{x}\in\mathbb{R}^m\) is a
   column vector\footnote{In matrix notation it is also often defined as row
   vector to avoid having to do some transpositions in the Jacobian matrix and
-  dot products in directional derivatives} containing the derivatives in each
-  direction.
+  dot products in directional derivatives} containing the partial derivatives
+  in each direction.
   \[
     \grad f (\vec{x}) = \sum_{i=1}^m \partial_{x_i} f(\vec{x}) \vec{e}_i
       = \begin{pmatrix}
@@ -188,20 +189,21 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
   \[
     \frac{\partial f}{\partial\vec{r}} 
       = \nabla_\vec{r} f = \vec{r} \dotp \grad f
+      = \sum_{i=1}^m r_i \partial_{x_i} f
   \]
 \end{definition}
 
 \begin{definition}[Jacobian Matrix]
   The \emph{Jacobian} \(\mx{J}_f\) (sometimes written as
   \(\frac{\partial(f_1,\ldots f_m)}{\partial(x_1,\ldots,x_n)}\)) of a function
-  \(\vec{f}: \mathbb{R}^n \to \mathbb{R}^m\) is a matrix
-  \(\in\mathbb{R}^{n\times m}\) whose entry at the \(i\)-th row and \(j\)-th
+  \(\vec{f}: \mathbb{R}^m \to \mathbb{R}^n\) is a matrix
+  \(\in\mathbb{R}^{m\times n}\) whose entry at the \(i\)-th row and \(j\)-th
   column is given by \((\mx{J}_f)_{i,j} = \partial_{x_j} f_i\), so
   \[
     \mx{J}_f = \begin{pmatrix}
-      \partial_{x_1} f_1 & \cdots & \partial_{x_n} f_1 \\
+      \partial_{x_1} f_1 & \cdots & \partial_{x_m} f_1 \\
       \vdots & \ddots & \vdots \\
-      \partial_{x_1} f_m & \cdots & \partial_{x_n} f_m \\
+      \partial_{x_1} f_n & \cdots & \partial_{x_m} f_n \\
     \end{pmatrix}
     = \begin{pmatrix}
       (\grad f_1)^t \\
@@ -212,7 +214,7 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
 \end{definition}
 
 \begin{remark}
-  In the scalar case (\(m = 1\)) the Jacobian matrix is the transpose of the
+  In the scalar case (\(n = 1\)) the Jacobian matrix is the transpose of the
   gradient vector.
 \end{remark}
 
@@ -365,18 +367,18 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
           n_i(\vec{u}) = 0  & \text{ for } 1 \leq i \leq k
         \end{dcases}
       \]
-      The \(\lambda\) values are known as \emph{Lagrange multipliers}. The same
-      calculation can be written more compactly by defining the
-      \emph{Lagrangian}
-      \[
-        \mathcal{L}(\vec{u}, \vec{\lambda}) 
-          = f(\vec{u}) - \sum_{i = 0}^k \lambda_i n_i(\vec{u}),
-      \]
-      where \(\vec{\lambda} = \lambda_1, \ldots, \lambda_k\) and then solving
-      the \(m+k\) dimensional equation \(\grad \mathcal{L}(\vec{u},
-      \vec{\lambda}) = \vec{0}\) (this is generally used in numerical
-      computations and not very useful by hand).
+      The \(\lambda\) values are known as \emph{Lagrange multipliers}.
   \end{itemize}
+  The calculation of the last point can be written more compactly by defining
+  the \emph{Lagrangian}
+  \[
+    \mathcal{L}(\vec{u}, \vec{\lambda}) 
+    = f(\vec{u}) - \sum_{i = 0}^k \lambda_i n_i(\vec{u}),
+  \]
+  where \(\vec{\lambda} = \lambda_1, \ldots, \lambda_k\) and then solving
+  the \(m+k\) dimensional equation \(\grad \mathcal{L}(\vec{u},
+  \vec{\lambda}) = \vec{0}\) (this is generally used in numerical
+  computations and not very useful by hand).
 \end{method}
 
 \subsection{Numerical methods}
@@ -385,10 +387,10 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
   For a function \(f:\mathbb{R}^m\to\mathbb{R}\) we wish to numerically find
   its stationary points (where \(\grad f = \vec{0}\)).
   \begin{enumerate}
-    \item Pick a starting point \(\vec{x}_0\)
+    \item Pick a starting point \(\vec{x}_0\).
     \item Set the linearisation\footnote{The gradient becomes a hessian matrix.}
       of \(\grad f\) at \(\vec{x}_k\) to zero and
-      solve for \(\vec{x}_{k+1}\)
+      solve for \(\vec{x}_{k+1}\).
       \begin{gather*}
         \grad f(\vec{x}_k) + \mx{H}_f (\vec{x}_k)
           (\vec{x}_{k+1} - \vec{x}_k) = \vec{0} \\
@@ -448,7 +450,7 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
   nonzero Jacobian determinant \(|\mx{J}_f| = \partial_u x \partial_v y -
   \partial_v x \partial_u y\), which transform the coordinate system. Then
   \[
-    \iint_S f(x,y) \,ds = \iint_{S'} f(x(u,v), y(u,v)) |\mx{J}_f| \,ds
+    \iint_S f(x,y) \,ds = \iint_{S'} f(x(u,v), y(u,v)) |\mx{J}_f| \,ds .
   \]
 \end{theorem}
 
@@ -458,7 +460,7 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
   region \(B\), we let \(\vec{x}(\vec{u})\) be ``nice'' functions that
   transform the coordinate system. Then as before
   \[
-    \int_B f(\vec{x}) \,ds = \int_{B'} f(\vec{x}(\vec{u})) |\mx{J}_f| \,ds
+    \int_B f(\vec{x}) \,ds = \int_{B'} f(\vec{x}(\vec{u})) |\mx{J}_f| \,ds .
   \]
 \end{theorem}
 
@@ -505,33 +507,33 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
   \subseteq \mathbb{R}^n, t \mapsto \vec{f}(t)\), that takes a parameter \(t\).
 \end{definition}
 
-\begin{definition}[Multivariable chain rule]
-  Let \(\vec{x}: \mathbb{R} \to \mathbb{R}^m\) and \(f: \mathbb{R}^m \to
-  \mathbb{R}\), so that \(f\circ\vec{x}: \mathbb{R} \to \mathbb{R}\), then
-  the multivariable chain rule states:
-  \[
-    \frac{d}{dt}f(\vec{x}(t)) = \grad f (\vec{x}(t)) \dotp \vec{x}'(t)
-      = \nabla_{\vec{x}'(t)} f(\vec{x}(t))
-  \]
-\end{definition}
-
-\begin{theorem}[Signed area enclosed by a planar parametric curve]
-  A planar (2D) parametric curve \((x(t), y(t))^t\) with \(t\in[r,s]\) that does
-  not intersect itself encloses a surface with area
-  \[
-    A = \int_r^s x'(t)y(t) \,dt
-      = \int_r^s x(t)y'(t) \,dt
-  \]
-\end{theorem}
-
 \begin{theorem}[Derivative of a curve]
   The derivative of a curve is
   \begin{align*}
     \vec{f}'(t) &= \lim_{h\to 0} \frac{\vec{f}(t + h) - \vec{f}(t)}{h} \\
     &= \sum_{i=0}^n \left(\lim_{h\to 0} \frac{f_i(t+h) - f_i(t)}{h}\right) \vec{e}_i \\
     &= \sum_{i=0}^n \frac{df_i}{dt}\vec{e}_i
-    = \left(\frac{df_1}{dt}, \ldots, \frac{df_m}{dt}\right)^t
+    = \left(\frac{df_1}{dt}, \ldots, \frac{df_m}{dt}\right)^t .
   \end{align*}
+\end{theorem}
+
+\begin{theorem}[Multivariable chain rule]
+  Let \(\vec{x}: \mathbb{R} \to \mathbb{R}^m\) and \(f: \mathbb{R}^m \to
+  \mathbb{R}\), so that \(f\circ\vec{x}: \mathbb{R} \to \mathbb{R}\), then
+  the multivariable chain rule states:
+  \[
+    \frac{d}{dt}f(\vec{x}(t)) = \grad f (\vec{x}(t)) \dotp \vec{x}'(t)
+      = \nabla_{\vec{x}'(t)} f(\vec{x}(t)) .
+  \]
+\end{theorem}
+
+\begin{theorem}[Signed area enclosed by a planar parametric curve]
+  A planar (2D) parametric curve \((x(t), y(t))^t\) with \(t\in[r,s]\) that does
+  not intersect itself encloses a surface with area
+  \[
+    A = \int_r^s x'(t)y(t) \,dt
+      = \int_r^s x(t)y'(t) \,dt .
+  \]
 \end{theorem}
 
 \begin{definition}[Line integral in a scalar field]
@@ -542,25 +544,25 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
   \[
     \int_\mathcal{C} f(\vec{x}) \,d\ell 
     = \int_\mathcal{C} f(\vec{x}) \,|d\vec{x}|
-    = \int_a^b f(\vec{x}(t)) |\vec{x}'(t)| \, dt
+    = \int_a^b f(\vec{x}(t)) |\vec{x}'(t)| \, dt .
   \]
 \end{definition}
 
 \begin{application}[Length of a parametric curve]
-  By computing the line integral of the function \(\vec{1}(t) = 1\) we get the
+  By computing the line integral of the function \(1(\vec{x})\) we get the
   length of the parametric curve \(\mathcal{C}:[a,b]\to\mathbb{R}^n\).
   \[
     \int_\mathcal{C}d\ell 
     = \int_\mathcal{C} |d\vec{x}|
     = \int_a^b \sqrt{\sum_{i=1}^n x'_i(t)^2} \,dt
   \]
-  In the special case with the scalar function \(f(x)\) results in
-  \(\int_a^b\sqrt{1+f'(x)^2}\,dx\)
+  The special case with the scalar function \(f(x)\) results in
+  \(\int_a^b\sqrt{1+f'(x)^2}\,dx\).
 \end{application}
 
 \begin{definition}[Line integral in a vector field]
-  The line integral in a vector field \(\vec{F}(\vec{x})\) is ``sum'' of the
-  projections of the field's vectors on the tangent of the parametric curve
+  The line integral in a vector field \(\vec{F}(\vec{x})\) is the ``sum'' of
+  the projections of the field's vectors on the tangent of the parametric curve
   \(\mathcal{C}\).
   \[
     \int_\mathcal{C} \vec{F}(\vec{r})\dotp d\vec{r}
@@ -572,7 +574,7 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
   By integrating while moving backwards (\(-t\)) on the parametric curve gives
   \[
     \int_{-\mathcal{C}} \vec{F}(\vec{r})\dotp d\vec{r}
-    = -\int_{\mathcal{C}} \vec{F}(\vec{r})\dotp d\vec{r}
+    = -\int_{\mathcal{C}} \vec{F}(\vec{r})\dotp d\vec{r} .
   \]
 \end{theorem}
 
@@ -590,11 +592,11 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
   contracted to a point (simply connected open set), the following statements
   are equivalent:
   \begin{itemize}
-    \item \(\vec{F}\) is conservative
-    \item \(\vec{F}\) is path-independent
+    \item \(\vec{F}\) is conservative,
+    \item \(\vec{F}\) is path-independent,
     \item \(\vec{F}\) is a \emph{gradient field}, i.e. there is a
       function \(\phi\) called \emph{potential} such that \(\vec{F} = \grad
-      \phi\)
+      \phi\),
     \item \(\vec{F}\) satisfies the condition \(\partial_{x_j} F_i =
       \partial_{x_i} F_j\) for all \(i,j \in \{1,2,\ldots,n\}\). In the 2D case
       \(\partial_x F_y = \partial_y F_x\), and in 3D
@@ -616,7 +618,7 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
     &= \int_\mathcal{C} \vec{F}(\vec{r}(t)) \dotp \vec{r}'(t) \,dt \\
     &= \int_\mathcal{C} \grad \phi(\vec{r}(t)) \cdot \vec{r}'(t) \,dt \\
     &= \int_\mathcal{C} \frac{d\phi(\vec{r}(t))}{dt}\,dt
-    = \phi(\vec{r}(b)) - \phi(\vec{r}(a))
+    = \phi(\vec{r}(b)) - \phi(\vec{r}(a)) .
   \end{align*}
 \end{theorem}
 
@@ -631,7 +633,7 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
   \vec{s} \neq \vec{0}\), is given by
   \[
     A = \int_\mathcal{S} ds 
-      = \iint |\partial_u \vec{s} \crossp \partial_v \vec{s}| \,dudv
+      = \iint |\partial_u \vec{s} \crossp \partial_v \vec{s}| \,dudv .
   \]
 \end{theorem}
 
@@ -642,7 +644,7 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
   \[
     \int_\mathcal{S} f \,ds = 
       \iint_W f(\vec{s}(u,v)) \cdot 
-        |\partial_u \vec{s} \crossp \partial_v \vec{s}| \,dudv
+        |\partial_u \vec{s} \crossp \partial_v \vec{s}| \,dudv .
   \]
 \end{definition}
 
@@ -662,7 +664,7 @@ typesetting may trick you into thinking it is rigorous, but really, it is not.
 \end{definition}
 
 If we now take the normalized flux on the surface of an arbitrarily small
-(limit) volume \(V\) we get the \emph{divergence}
+volume \(V\) (limit as \(V\to 0\)) we get the \emph{divergence}
 \[
   \div \vec{F} = \lim_{V\to 0} \frac{1}{V} \oint_{\partial V} \vec{F}\dotp d\vec{s} .
 \]
@@ -692,7 +694,7 @@ If we now take the normalized flux on the surface of an arbitrarily small
 
 As before, if we now make the area \(A\) enclosed by the parametric curve for
 the circulation arbitrarily small, normalize it, and use Gauss's theorem we get
-a local measure called \emph{curl}
+a local measure called \emph{curl}.
 \[
   \curl \vec{F} =
   \lim_{A\to 0} \frac{\uvec{n}}{A} \oint_{\partial A} \vec{F} \dotp d\vec{s}
@@ -753,7 +755,7 @@ Notice that the curl is a vector, normal to the enclosed surface \(A\).
       + (\laplacian F_y)\uvec{y} 
       + (\laplacian F_z)\uvec{z} .
   \]
-  The vector laplacian can also be defined as
+  The vector Laplacian can also be defined as
   \[
     \vlaplacian \vec{F} = \grad (\div \vec{F}) - \curl (\curl \vec{F}).
   \]
